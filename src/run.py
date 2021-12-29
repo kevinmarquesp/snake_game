@@ -14,7 +14,12 @@ def main():
         menu.start
 
         if menu.selected_item == 0:
-            play.start
+            # Volta pro menu se a tela for redimencionada
+            try:
+                play.start
+            except:
+                pass
+
             score_board.add_score(play.score[:])
 
         elif menu.selected_item == 1:
