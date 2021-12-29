@@ -128,6 +128,7 @@ class Play(Globals):
         self.__snake_body_fill = snake_body_fill
         self.__apple_fill = apple_fill
 
+        self.__pause = False
         self.score = None
 
 
@@ -164,14 +165,18 @@ class Play(Globals):
 
     def __loop(self, screen):
         while 1:
+            # Se a cobra estiver subindo/descendo, ela vai mais devagar...
             if self.__current_direction in ["up", "down"]:
                 screen.timeout(60)
             else:
                 screen.timeout(40)
 
             self.__get_new_direction(screen, self.__current_direction)
-            self.__move_snake_head(screen)
-            self.__remove_the_tail(screen)
+
+            # Se o jogo não estiver pausado, ele continua...
+            if not self.__pause:
+                self.__move_snake_head(screen)
+                self.__remove_the_tail(screen)
 
             if self.__condictions_to_lose():
                 break
@@ -242,6 +247,13 @@ class Play(Globals):
             and new_direction != "return"
         ):
             self.__current_direction = new_direction
+
+        # Se a tecla for "return" ele troca os valores de self.__pause...
+        elif new_direction == "return":
+            if self.__pause:
+                self.__pause = False
+            else:
+                self.__pause = True
 
 
     # Desenha uma nova cabeça na frente da cobra, com base na direção atual.
